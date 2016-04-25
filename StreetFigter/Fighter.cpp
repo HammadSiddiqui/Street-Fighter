@@ -24,6 +24,10 @@ void Fighter::SetPosition(float x,float y) {
     this->position.y = y;
 }
 
+Point Fighter::GetPosition() {
+    return this->position;
+}
+
 bool Fighter::isAlive() {
     return this->alive;
 }
@@ -45,9 +49,49 @@ void Fighter::Move(float i,float j) {
 }
 
 void Fighter::Draw(BITMAP* buffer) {
-    switch(state){
-        case WALK_BACKWARD:
-        if(frames%200 < 40){
+    switch(state)
+    {
+    case JUMP:
+        if(frames%400 < 50)
+            {
+                masked_blit(this->image, buffer, 15,640,this->position.x,this->position.y,60,80);
+
+            }
+            else if(frames%400 < 100 && frames%400 >= 50){
+                masked_blit(this->image, buffer, 80,640,this->position.x,this->position.y - 9.0f,60,80);
+
+            }
+            else if(frames%400 < 150 && frames%400 >= 100) {
+                masked_blit(this->image, buffer, 160,640,this->position.x,this->position.y - 18.0f,60,80);
+
+            }
+            else if(frames%400 < 200 && frames%400 >= 150) {
+                masked_blit(this->image, buffer, 230,640,this->position.x,this->position.y - 24.0f,60,80);
+
+            }
+            else if(frames%400 < 250 && frames%400 >= 200) {
+                masked_blit(this->image, buffer, 300,640,this->position.x,this->position.y - 18.0f,60,80);
+
+            }
+            else if(frames%400 <= 300 && frames%400 >= 250) {
+                masked_blit(this->image, buffer, 365,640,this->position.x,this->position.y - 9.0f,60,80);
+
+            }
+            else if(frames%400 <= 400 && frames%350 >= 300) {
+                masked_blit(this->image, buffer, 440,640,this->position.x,this->position.y, 60, 80);
+            }
+            frames++;
+        break;
+
+
+    case CROUCH:
+        masked_blit(this->image, buffer, 15,720,this->position.x,this->position.y,60,80);
+        frames++;
+        break;
+
+    case WALK_BACKWARD:
+            if(frames%200 < 40)
+            {
                 masked_blit(this->image, buffer, 295,240,this->position.x,this->position.y,60,80);
                 this->Move(-0.2f,0);
 
@@ -68,10 +112,12 @@ void Fighter::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 13,240,this->position.x,this->position.y,60,80);
                 this->Move(-0.2f,0);
             }
-        frames++;
-    break;
+            frames++;
+            break;
+
     case WALK_FORWARD:
-        if(frames%200 < 40){
+        if(frames%200 < 40)
+            {
                 masked_blit(this->image, buffer, 13,240,this->position.x,this->position.y,60,80);
                 this->Move(0.2f,0);
 
@@ -93,44 +139,44 @@ void Fighter::Draw(BITMAP* buffer) {
                 this->Move(0.2f,0);
             }
         frames++;
-    break;
+        break;
     case KICK:
-            if(frames%200 < 40){
-                masked_blit(this->image, buffer, 15,475,this->position.x,this->position.y,60,80);
+            if(frames%200 < 40)
+            {
+                masked_blit(this->image, buffer, 18,475,this->position.x,this->position.y,60,85);
 
             }
-            else if(frames%200 < 80 && frames%125 >= 40){
-                masked_blit(this->image, buffer, 80,475,this->position.x,this->position.y,60,80);
-
+            else if(frames%200 < 80 && frames%200 >= 40){
+                masked_blit(this->image, buffer, 80,475,this->position.x,this->position.y,60,85);
             }
-            else if(frames%200 < 120 && frames%125 >= 80) {
-                masked_blit(this->image, buffer, 140,475,this->position.x,this->position.y,60,80);
+            else if(frames%200 < 120 && frames%200 >= 80) {
+                masked_blit(this->image, buffer, 140,475,this->position.x,this->position.y,60,85);
             }
-            else if(frames%200 <= 160 && frames%125 >= 120) {
-                masked_blit(this->image, buffer, 220,475,this->position.x,this->position.y,60,80);
+            else if(frames%200 < 160 && frames%200 >= 120) {
+                masked_blit(this->image, buffer, 220,475,this->position.x,this->position.y,60,85);
             }
-            else if(frames%200 <= 200 && frames%125 >= 160) {
-                masked_blit(this->image, buffer, 300,475,this->position.x,this->position.y,60,80);
+            else if(frames%200 < 200 && frames%200 >= 160) {
+                masked_blit(this->image, buffer, 300,475,this->position.x,this->position.y,65,90);
             }
-        frames++;
+            frames++;
+            break;
 
 
     case PUNCH:
 
-
-            if(frames%200 < 50){
+            if(frames%200 < 50)
+            {
                 masked_blit(this->image, buffer, 15,160,this->position.x,this->position.y,60,80);
-
             }
             else if(frames%200 < 100 && frames%200 >= 50){
                 masked_blit(this->image, buffer, 85,160,this->position.x,this->position.y,60,80);
-
             }
             else if(frames%200 <=200 && frames%200 >= 100) {
                 masked_blit(this->image, buffer, 155,160,this->position.x,this->position.y,60,80);
             }
             //Has only three frames in sprite
         frames++;
+        break;
 
 
     case IDLE:
@@ -158,9 +204,6 @@ void Fighter::Draw(BITMAP* buffer) {
         //frames = 0;
 
 
-    default:
-        break;
-
 /*        while(frames < 39)
         {
             std::cout << frames << std::endl;
@@ -181,6 +224,7 @@ void Fighter::Draw(BITMAP* buffer) {
     }
     frames = 0;
 */
+frames = 0;
 }
 }
 

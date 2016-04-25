@@ -2,6 +2,7 @@
 #include<iostream>
 #include "Fighter.h"
 #include "CircleLinkedList.h"
+#include "Background.h"
 
 volatile long speed_counter = 0; // A long integer which will store the value of the speed counter.
 volatile long objectCounter = 0;
@@ -58,8 +59,8 @@ int main(int argc, char* argv[])
 	BITMAP* buffer = create_bitmap(SCREEN_W, 640);
 
 
-    BITMAP* background = load_bitmap("images/bg1.bmp", NULL);
-
+    BITMAP* background = load_bitmap("images/Area1.bmp", NULL);
+    Background *area = new Background(background);
 	/*Fighter Image*/
 	BITMAP* gameSprite = load_bitmap("images/ken.bmp", NULL);
 
@@ -93,7 +94,6 @@ int main(int argc, char* argv[])
 
     int spaceDelay = 0;
 
-
 	while(!key[KEY_ESC])
     {
         //Add your game logic here
@@ -114,18 +114,11 @@ int main(int argc, char* argv[])
             else if(key[KEY_DOWN]) // Ditto' - only for down
             {
                 player->SetState(CROUCH);
-
             }
              else if(key[KEY_S]) // If the user hits the up key, change the picture's Y coordinate
             {
 
-
                     player->SetState(KICK);
-                    //spaceDelay = 0;
-
-                std::cout << "KICK\n";
-
-
 
             }
             else if(key[KEY_A]) // Ditto' - only for down
@@ -133,23 +126,14 @@ int main(int argc, char* argv[])
 
 
                     player->SetState(PUNCH);
-                    //spaceDelay = 0;
 
-
-                //player->SetState(PUNCH);
 
             }
             else if(key[KEY_SPACE]) // press space to fire
             {
-                /*
-                if(spaceDelay >= 20)
-                {
-
-                    spaceDelay = 0;
-                }
-                */
-
+                    player->SetState(JUMP);
             }
+
             if(spaceDelay >= 30) {
                 player->SetState(IDLE);
                 spaceDelay = 0;
@@ -182,8 +166,11 @@ int main(int argc, char* argv[])
             speed_counter--;
         }
 
-
-        masked_blit(background, buffer, 0,0,0,0,600,640);
+        if(player->GetPosition().x >= 500) {
+            area->Move(0.2f);
+        }
+        area->Draw(screen);
+//        masked_blit(background, buffer, 0,0,0,0,SCREEN_W,SCREEN_H);
        // player->Draw(buffer);
         playerList->Draw(buffer);
 

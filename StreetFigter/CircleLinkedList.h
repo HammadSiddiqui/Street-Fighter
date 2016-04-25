@@ -19,7 +19,7 @@ class CircleLinkedList
         void Insert(Type);
         void DeleteAt(int);
         int GetLength();
-        void PrintAll();
+
         void Draw(BITMAP*);
     protected:
 

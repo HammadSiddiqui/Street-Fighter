@@ -12,6 +12,7 @@ class Fighter
         Fighter(BITMAP*, float,float);
         virtual ~Fighter();
         void SetPosition(float,float);
+        Point GetPosition();
         void Draw(BITMAP*);
         void Action();
         bool isAlive();
