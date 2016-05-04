@@ -77,7 +77,7 @@ void Fighter::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 365,640,this->position.x,this->position.y - 9.0f,60,80);
 
             }
-            else if(frames%400 <= 400 && frames%350 >= 300) {
+            else if(frames%400 <= 400 && frames%400 >= 300) {
                 masked_blit(this->image, buffer, 440,640,this->position.x,this->position.y, 60, 80);
             }
             frames++;
@@ -92,7 +92,7 @@ void Fighter::Draw(BITMAP* buffer) {
     case WALK_BACKWARD:
             if(frames%200 < 40)
             {
-                masked_blit(this->image, buffer, 295,240,this->position.x,this->position.y,60,80);
+               masked_blit(this->image, buffer, 295,240,this->position.x,this->position.y,60,80);
                 this->Move(-0.2f,0);
 
             }

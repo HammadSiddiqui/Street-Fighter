@@ -1,6 +1,7 @@
 #include <allegro.h>
-#include<iostream>
+#include <iostream>
 #include "Fighter.h"
+#include "Enemy.h"
 #include "CircleLinkedList.h"
 #include "Background.h"
 
@@ -18,6 +19,7 @@ END_OF_FUNCTION(increment_speed_counter);
 
 int main(int argc, char* argv[])
 {
+    srand(time(0));
 	if (allegro_init() != 0)
 	{
 		allegro_message("Cannot initialize Allegro.\n");
@@ -45,35 +47,38 @@ int main(int argc, char* argv[])
 	set_color_depth(32);
 
 
-
-	//set graphics mode, trying all acceptable depths
-	set_color_depth(32);
-
 	int w, h;
 	get_desktop_resolution(&w, &h);
 	set_color_depth(desktop_color_depth());
 
-	set_gfx_mode(GFX_SAFE, 800, 600, 0, 0);
+	//set_gfx_mode(GFX_SAFE, 800, 600, 0, 0);
+	set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, 640, 480, 0, 0);
+	//set_gfx_mode(GFX_DIRECTX_ACCEL, 800, 600, 0, 0);
 
 	/*Buffer*/
-	BITMAP* buffer = create_bitmap(SCREEN_W, 640);
-
-
+	BITMAP* buffer = create_bitmap(SCREEN_W, SCREEN_H);
+	/*Background*/
     BITMAP* background = load_bitmap("images/Area1.bmp", NULL);
-    Background *area = new Background(background);
+
 	/*Fighter Image*/
 	BITMAP* gameSprite = load_bitmap("images/ken.bmp", NULL);
+	/*Enemy Image*/
+	BITMAP* EnemySprite = load_bitmap("images/enemy1.bmp", NULL);
 
-	if(gameSprite == NULL) {
+	if(gameSprite == NULL or background == NULL or EnemySprite == NULL) {
         allegro_message("Sprite not loaded\n");
 		return 1;
 
 	}
 
+    Background *area = new Background(background);
 	Fighter *player = new Fighter(gameSprite, 150.0,380.0);
+	Enemy *kasungai = new Enemy(EnemySprite, 500, 380);
+	kasungai->SetTarget(player);
 	CircleLinkedList<Fighter*>* playerList = new CircleLinkedList<Fighter*>;
 	playerList->Insert(player);
-//    Commando* player = new Commando(gameSprite);
+	playerList->Insert(kasungai);
+
     STATE state;
     state = IDLE;
 
@@ -99,7 +104,7 @@ int main(int argc, char* argv[])
         //Add your game logic here
         while (speed_counter > 0)
         {
-
+            kasungai->AI();
             if(key[KEY_RIGHT]) // If the user hits the right key, change the picture's X coordinate
             {
 
@@ -136,6 +141,7 @@ int main(int argc, char* argv[])
 
             if(spaceDelay >= 30) {
                 player->SetState(IDLE);
+                kasungai->SetState(IDLE);
                 spaceDelay = 0;
             }
 
@@ -163,14 +169,24 @@ int main(int argc, char* argv[])
 
             speed_counter--;
             */
+
+            if(player->GetPosition().x >= 500) {
+            player->Move(-3.0f, 0.0f);
+            area->Move(0.8f);
+            }
+            else if (player->GetPosition().x <= 100) {
+                player->Move(1.0f, 0.0f);
+                area->Move(-0.6f);
+            }
+
+            //player->Move(1.0f, 0.0f);
             speed_counter--;
         }
 
-        if(player->GetPosition().x >= 500) {
-            area->Move(0.2f);
-        }
-        area->Draw(screen);
-//        masked_blit(background, buffer, 0,0,0,0,SCREEN_W,SCREEN_H);
+
+
+        area->Draw(buffer);
+        //masked_blit(background, buffer, 0,0,0,0,SCREEN_W,SCREEN_H);
        // player->Draw(buffer);
         playerList->Draw(buffer);
 

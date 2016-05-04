@@ -13,7 +13,7 @@ class Fighter
         virtual ~Fighter();
         void SetPosition(float,float);
         Point GetPosition();
-        void Draw(BITMAP*);
+        virtual void Draw(BITMAP*);
         void Action();
         bool isAlive();
         void SetState(enum STATE);

@@ -14,5 +14,6 @@ class Background
 
     private:
         BITMAP* image;
+        BITMAP* visibleImage;
         float xCordinate;
 };
