@@ -24,11 +24,11 @@ void Enemy::SetTarget(Fighter* tar) {
 
 void Enemy::AI() {
         int probability = rand()%100;
-        int temp = this->position.x - this->target->GetPosition().x;
+        int posDifference = this->position.x - this->target->GetPosition().x;
 
-        if (this->position.x - this->target->GetPosition().x >= 60)
+        if (posDifference >= 60)
         {
-                if(probability <= 20)
+                if(probability <= 90)
                 {
                     this->SetState(WALK_FORWARD);
                 }
@@ -39,22 +39,20 @@ void Enemy::AI() {
         }
         else if (this->position.x - this->target->GetPosition().x <= 30)
                 {
-                    if(probability >= 20)
+                    if(probability < 20)
                     {
                         this->SetState(KICK);
                     }
-                    else if(probability < 20)
-                    {
-                        this->SetState(WALK_BACKWARD);
-
-                    }
-                    else
+                    else if(probability >= 20 && probability < 40)
                     {
                         this->SetState(PUNCH);
                     }
+                    else
+                    {
+                        this->SetState(WALK_BACKWARD);
+                    }
 
                 }
-
 
 }
 

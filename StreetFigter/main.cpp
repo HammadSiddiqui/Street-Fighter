@@ -19,6 +19,8 @@ END_OF_FUNCTION(increment_speed_counter);
 
 int main(int argc, char* argv[])
 {
+    enum SCREEN {SPLASH, GAMEPLAY, SCORE};
+    SCREEN screenMode = SPLASH;
     srand(time(0));
 	if (allegro_init() != 0)
 	{
@@ -59,13 +61,14 @@ int main(int argc, char* argv[])
 	BITMAP* buffer = create_bitmap(SCREEN_W, SCREEN_H);
 	/*Background*/
     BITMAP* background = load_bitmap("images/Area1.bmp", NULL);
-
+    /*Splash Image*/
+    BITMAP* splashImg = load_bitmap("images/splash.bmp", NULL);
 	/*Fighter Image*/
 	BITMAP* gameSprite = load_bitmap("images/ken.bmp", NULL);
 	/*Enemy Image*/
 	BITMAP* EnemySprite = load_bitmap("images/enemy1.bmp", NULL);
 
-	if(gameSprite == NULL or background == NULL or EnemySprite == NULL) {
+	if(gameSprite == NULL or background == NULL or EnemySprite == NULL or splashImg == NULL) {
         allegro_message("Sprite not loaded\n");
 		return 1;
 
@@ -102,6 +105,16 @@ int main(int argc, char* argv[])
 	while(!key[KEY_ESC])
     {
         //Add your game logic here
+        if(screenMode == SPLASH)
+        {
+            draw_sprite(buffer, splashImg, 0, 0);
+            if(key[KEY_SPACE]){
+                screenMode = GAMEPLAY;
+            }
+        }
+
+        else if (screenMode == GAMEPLAY)
+        {
         while (speed_counter > 0)
         {
             kasungai->AI();
@@ -189,7 +202,7 @@ int main(int argc, char* argv[])
         //masked_blit(background, buffer, 0,0,0,0,SCREEN_W,SCREEN_H);
        // player->Draw(buffer);
         playerList->Draw(buffer);
-
+        }
         draw_sprite(screen, buffer, 0, 0);
         clear_bitmap(buffer);
 
