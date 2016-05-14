@@ -11,5 +11,6 @@ class Enemy : public Fighter
         void SetTarget(Fighter*);
     protected:
         Fighter* target;
+        unsigned int delay = 0;
     private:
 };

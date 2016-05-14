@@ -37,12 +37,20 @@
 		</Compiler>
 		<Unit filename="Background.cpp" />
 		<Unit filename="Background.h" />
+		<Unit filename="Character.cpp" />
+		<Unit filename="Character.h" />
 		<Unit filename="CircleLinkedList.h" />
 		<Unit filename="Enemy.cpp" />
 		<Unit filename="Enemy.h" />
 		<Unit filename="Fighter.cpp" />
 		<Unit filename="Fighter.h" />
+		<Unit filename="HealthBar.cpp" />
+		<Unit filename="HealthBar.h" />
 		<Unit filename="Point.h" />
+		<Unit filename="Screen.cpp" />
+		<Unit filename="Screen.h" />
+		<Unit filename="Word.cpp" />
+		<Unit filename="Word.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

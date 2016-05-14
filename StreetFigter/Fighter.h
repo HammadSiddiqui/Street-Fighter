@@ -14,11 +14,15 @@ class Fighter
         void SetPosition(float,float);
         Point GetPosition();
         virtual void Draw(BITMAP*);
-        void Action();
         bool isAlive();
         void SetState(enum STATE);
+        STATE GetState();
         void TakeDamage(int);
+        int GetHealth();
         void Move(float,float);
+      //virtual void Update();
+        int GetFrameWidth();
+        virtual void AI();
 
 
     protected:
@@ -30,7 +34,6 @@ class Fighter
         STATE state;
         Point position;
         int frames;
-
 
     private:
 };

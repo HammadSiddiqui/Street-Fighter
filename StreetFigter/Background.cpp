@@ -24,6 +24,11 @@ void Background::Move(float x) {
     }
 }
 
+int Background::GetCordinate() {
+
+    return this->xCordinate;
+}
+
 void Background::Draw(BITMAP* buffer) {
 
         masked_blit(this->image, buffer, xCordinate,0,0,0,SCREEN_W,SCREEN_H);

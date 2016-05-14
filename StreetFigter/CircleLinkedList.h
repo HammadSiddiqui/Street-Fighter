@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 
+
 template <typename Type>
 struct Node {
     Type data;
@@ -17,10 +18,12 @@ class CircleLinkedList
         Node<Type>* GetHead();
         void Pop();
         void Insert(Type);
-        void DeleteAt(int);
         int GetLength();
-
+        void CollisionDetection(Node<Type>*);
+        void CollisionFunction();
+        void DeleteDead();
         void Draw(BITMAP*);
+        void AI();
     protected:
 
 
@@ -49,21 +52,21 @@ CircleLinkedList<Type>::~CircleLinkedList()
 //Node is inserted at the end of the queue/list
 template <typename Type>
 void CircleLinkedList<Type>::Insert(Type d) {
-    Node<Type>* data = new Node<Type>;
-    data->data = d;
+    Node<Type>* temp = new Node<Type>;
+    temp->data = d;
     if(this->head == NULL) {
 
-        head = data;
-        data->next = head;
+        head = temp;
+        temp->next = head;
     }
     else {
-        Node<Type>* temp = head;
+        Node<Type>* temp2 = head;
 
-        while(temp->next != head) {
-            temp = temp->next;
+        while(temp2->next != head) {
+            temp2 = temp2->next;
         }
-        data->next = this->head;
-        temp->next = data;
+        temp->next = this->head;
+        temp2->next = temp;
     }
     length++;
 }
@@ -86,28 +89,6 @@ void CircleLinkedList<Type>::Pop() {
     head = head->next;
     delete temp;
     length--;
-}
-
-template <typename Type>
-void CircleLinkedList<Type>::DeleteAt(int index) {
-
-    if(length == 1)
-    {
-        Pop();
-    }
-
-    else
-    {
-        Node<Type>* temp = head;
-        Node<Type>* temp2 = head;
-        while (index != 1) {
-            temp2 = temp2->next; //node before the one that is to be deleted
-            index--;
-        }
-        temp = temp2->next;
-        temp2->next = temp->next;
-        delete temp;
-    }
 }
 
 template <typename Type>
@@ -138,5 +119,92 @@ void CircleLinkedList<Type>::Draw(BITMAP* buffer) {
 
 }
 
+template <typename Type>
+void CircleLinkedList<Type>::CollisionDetection(Node<Type>* enemy){
+
+        Node<Type>* fighter = this->head;
+
+        //Collision Detection when Bounding boxes overlap and the sprites are in attack state.
+        if((fighter->data->GetState() == PUNCH || fighter->data->GetState() == KICK) &&
+           ((fighter->data->GetPosition().x + fighter->data->GetFrameWidth() - enemy->data->GetPosition().x) > 10))
+        {
+            enemy->data->TakeDamage(10);
+
+        }
+        else if((enemy->data->GetState() == PUNCH || enemy->data->GetState() == KICK) &&
+           ((fighter->data->GetPosition().x + fighter->data->GetFrameWidth() - enemy->data->GetPosition().x) > 0))
+        {
+            fighter->data->TakeDamage(10);
+        }
+
+}
+
+//This Function checks all nodes and delete the ones in which the object is not alive
+template <typename Type>
+void CircleLinkedList<Type>::DeleteDead(){
+    int nodePos = 0;
+    Node<Type>* temp = head;
+    //if our player is dead, which is present at the head of the list
+    if(head->data->isAlive() == false) {
+        //The last node is pointing to current head. We have to make it point to head->next
+        Node<Type>* temp2 = head;
+        while(temp2->next != head){
+            temp2 = temp2->next;
+        }
+        head = head->next;
+        temp2->next = head;
+        //after pointing the last node to new head, we delete the old head and it's data
+        delete temp->data;
+        delete temp;
+    }
+    else {
+        //else we loop through all the rest of the nodes and remove the dead nodes.
+        while(temp->next != head) {
+
+        if(temp->next->data->isAlive() == false) {
+
+            Node<Type>* temp2 = temp->next;
+            temp->next = temp2->next;
+            delete temp2->data;
+            delete temp2;
+
+        }
+        temp = temp->next;
+        nodePos++;
+    }
+    //this has to be especially called again as the LAST NODE is not checked in the while loop above in a Circled linked list
+    if(temp->next->data->isAlive() == false) {
+
+            Node<Type>* temp2 = temp->next;
+            temp->next = temp2->next;
+            delete temp2->data;
+            delete temp2;
+
+        }
+
+    }
+
+}
 
 
+template <typename Type>
+void CircleLinkedList<Type>::CollisionFunction(){
+    //Runs Artificial Intelligence on Enemies. Head is our Player, rest are enemies.
+    Node<Type>* temp = head->next;
+    while(temp->next != head) {
+        this->CollisionDetection(temp);
+        temp = temp->next;
+    }
+    this->CollisionDetection(temp);
+}
+
+template <typename Type>
+void CircleLinkedList<Type>::AI(){
+    //Runs Artificial Intelligence on Enemies. Head is our Player, rest are enemies.
+    Node<Type>* temp = head;
+    while(temp->next != head) {
+        temp->data->AI();
+        temp = temp->next;
+    }
+    temp->data->AI();
+}

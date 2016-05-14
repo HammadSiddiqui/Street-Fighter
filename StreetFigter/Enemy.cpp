@@ -14,45 +14,50 @@ Enemy::Enemy()
 Enemy::~Enemy()
 {
     //dtor
+    std::cout << "Enemy Destroyed\n";
 }
 
 void Enemy::SetTarget(Fighter* tar) {
     this->target = tar;
 }
 
-
+//void Enemy::Update()
+//{
+ //   AI();
+//}
 
 void Enemy::AI() {
         int probability = rand()%100;
-        int posDifference = this->position.x - this->target->GetPosition().x;
+        //Distance btw player and enemy
+        int posDiff = this->position.x - this->target->GetPosition().x;
 
-        if (posDifference >= 60)
+        if (posDiff>= 60)
         {
-                if(probability <= 90)
+                if(delay%40 <= 20)
                 {
                     this->SetState(WALK_FORWARD);
                 }
 
-
-                //else move back or attack
-
         }
-        else if (this->position.x - this->target->GetPosition().x <= 30)
+        else if (posDiff <= 30)
+        {
+                if(delay%100 < 20)
                 {
-                    if(probability < 20)
-                    {
                         this->SetState(KICK);
-                    }
-                    else if(probability >= 20 && probability < 40)
-                    {
-                        this->SetState(PUNCH);
-                    }
-                    else
-                    {
-                        this->SetState(WALK_BACKWARD);
-                    }
+                }
+                else if(delay%100 >= 20 && delay%100 < 40)
+                {
+                    this->SetState(WALK_BACKWARD);
 
                 }
+                else
+                {
+                    this->SetState(PUNCH);
+                }
+
+        }
+        delay++;
+
 
 }
 
@@ -177,10 +182,12 @@ void Enemy::Draw(BITMAP* buffer) {
             {
                 masked_blit(this->image, buffer, 435,160,this->position.x,this->position.y,60,80);
             }
-            else if(frames%200 < 100 && frames%200 >= 50){
+            else if(frames%200 < 100 && frames%200 >= 50)
+            {
                 masked_blit(this->image, buffer, 350,160,this->position.x,this->position.y,60,80);
             }
-            else if(frames%200 <=200 && frames%200 >= 100) {
+            else if(frames%200 <=200 && frames%200 >= 100)
+            {
                 masked_blit(this->image, buffer, 295,160,this->position.x,this->position.y,60,80);
             }
             //Has only three frames in sprite
@@ -192,13 +199,12 @@ void Enemy::Draw(BITMAP* buffer) {
          //while(frames < 300)
         {
 
-            if(frames%400 < 100){
+            if(frames%400 < 100)
+            {
                 masked_blit(this->image, buffer, 440,80,this->position.x,this->position.y,60,80);
-
             }
             else if(frames%400 < 200 && frames%400 >= 100){
                 masked_blit(this->image, buffer, 365,80,this->position.x,this->position.y,60,80);
-
             }
             else if(frames%400 < 300 && frames%400 >= 200) {
                 masked_blit(this->image, buffer, 295,80,this->position.x,this->position.y,60,80);
@@ -210,29 +216,6 @@ void Enemy::Draw(BITMAP* buffer) {
         }
         break;
 
-        //frames = 0;
-
-
-/*        while(frames < 39)
-        {
-            std::cout << frames << std::endl;
-            if(frames < 15){
-                masked_blit(this->image, buffer, 15,80,this->position.x,this->position.y,60,80);
-
-            }
-            else if(frames < 25 && frames >= 15){
-                masked_blit(this->image, buffer, 85,80,this->position.x,this->position.y,60,80);
-
-            }
-            else if(frames < 35 && frames >= 25) {
-                masked_blit(this->image, buffer, 155,80,this->position.x,this->position.y,60,80);
-
-            }
-        frames++;
-        }
-    }
     frames = 0;
-*/
-frames = 0;
 }
 }

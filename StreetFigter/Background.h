@@ -9,6 +9,7 @@ class Background
         void Draw(BITMAP*);
         ~Background();
         void Move(float);
+        int GetCordinate();
 
     protected:
 

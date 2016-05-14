@@ -2,8 +2,10 @@
 #include <iostream>
 #include "Fighter.h"
 #include "Enemy.h"
+#include "HealthBar.h"
 #include "CircleLinkedList.h"
 #include "Background.h"
+#include "Screen.h"
 
 volatile long speed_counter = 0; // A long integer which will store the value of the speed counter.
 volatile long objectCounter = 0;
@@ -19,6 +21,7 @@ END_OF_FUNCTION(increment_speed_counter);
 
 int main(int argc, char* argv[])
 {
+    //Enumerater for Different types of screen
     enum SCREEN {SPLASH, GAMEPLAY, SCORE};
     SCREEN screenMode = SPLASH;
     srand(time(0));
@@ -53,8 +56,8 @@ int main(int argc, char* argv[])
 	get_desktop_resolution(&w, &h);
 	set_color_depth(desktop_color_depth());
 
-	//set_gfx_mode(GFX_SAFE, 800, 600, 0, 0);
-	set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, 640, 480, 0, 0);
+	set_gfx_mode(GFX_SAFE, 800, 600, 0, 0);
+	//set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, 640, 480, 0, 0);
 	//set_gfx_mode(GFX_DIRECTX_ACCEL, 800, 600, 0, 0);
 
 	/*Buffer*/
@@ -66,9 +69,15 @@ int main(int argc, char* argv[])
 	/*Fighter Image*/
 	BITMAP* gameSprite = load_bitmap("images/ken.bmp", NULL);
 	/*Enemy Image*/
-	BITMAP* EnemySprite = load_bitmap("images/enemy1.bmp", NULL);
+	BITMAP* EnemySprite[3];
+	EnemySprite[0] = load_bitmap("images/enemy1.bmp", NULL);
+	EnemySprite[1] = load_bitmap("images/enemy2.bmp", NULL);
+	EnemySprite[2] = load_bitmap("images/enemy3.bmp", NULL);
+	//Game Health Bar
+	BITMAP* ui = load_bitmap("images/ui.bmp", NULL);
 
-	if(gameSprite == NULL or background == NULL or EnemySprite == NULL or splashImg == NULL) {
+	if(gameSprite == NULL or background == NULL or EnemySprite == NULL or splashImg == NULL
+        or ui == NULL) {
         allegro_message("Sprite not loaded\n");
 		return 1;
 
@@ -76,7 +85,8 @@ int main(int argc, char* argv[])
 
     Background *area = new Background(background);
 	Fighter *player = new Fighter(gameSprite, 150.0,380.0);
-	Enemy *kasungai = new Enemy(EnemySprite, 500, 380);
+	Enemy *kasungai = new Enemy(EnemySprite[0], 500, 380);
+	HealthBar* healthBar = new HealthBar(ui,1,1);
 	kasungai->SetTarget(player);
 	CircleLinkedList<Fighter*>* playerList = new CircleLinkedList<Fighter*>;
 	playerList->Insert(player);
@@ -84,6 +94,7 @@ int main(int argc, char* argv[])
 
     STATE state;
     state = IDLE;
+    int enemyCounter = 0;
 
     srand((unsigned)time(0));
     //y = 210 + (rand() % (int)(110));
@@ -117,7 +128,8 @@ int main(int argc, char* argv[])
         {
         while (speed_counter > 0)
         {
-            kasungai->AI();
+            playerList->AI();
+            playerList->CollisionFunction();
             if(key[KEY_RIGHT]) // If the user hits the right key, change the picture's X coordinate
             {
 
@@ -182,23 +194,51 @@ int main(int argc, char* argv[])
 
             speed_counter--;
             */
-
-            if(player->GetPosition().x >= 500) {
-            player->Move(-3.0f, 0.0f);
-            area->Move(0.8f);
+            healthBar->Move(player->GetHealth());
+            switch(area->GetCordinate())
+            {
+            case 120:
+                if(enemyCounter == 0)
+                {
+                    Enemy *enemyObj = new Enemy(EnemySprite[rand()%3], 600, 380);
+                    enemyObj->SetTarget(player);
+                    playerList->Insert(enemyObj);
+                }
+                enemyCounter = 1;
+                break;
+            case 220:
+                if(enemyCounter == 1)
+                {
+                    Enemy *enemyObj2 = new Enemy(EnemySprite[rand()%3], 600, 380);
+                    enemyObj2->SetTarget(player);
+                    playerList->Insert(enemyObj2);
+                }
+                enemyCounter = 2;
+                break;
+            default:
+                break;
             }
-            else if (player->GetPosition().x <= 100) {
+
+
+            if(player->GetPosition().x >= 500)
+            {
+                player->Move(-3.0f, 0.0f);
+                area->Move(1.8f);
+            }
+            else if (player->GetPosition().x <= 100)
+            {
                 player->Move(1.0f, 0.0f);
-                area->Move(-0.6f);
+                area->Move(-1.8f);
             }
 
-            //player->Move(1.0f, 0.0f);
+
             speed_counter--;
         }
 
 
 
         area->Draw(buffer);
+        healthBar->Draw(buffer);
         //masked_blit(background, buffer, 0,0,0,0,SCREEN_W,SCREEN_H);
        // player->Draw(buffer);
         playerList->Draw(buffer);
@@ -215,11 +255,14 @@ int main(int argc, char* argv[])
 		draw_sprite(screen, buffer, 0, 0);
 		clear_bitmap(buffer);
         objects->CleanAll();
+        playerList->DeleteDead();
 */
+        playerList->DeleteDead();
 	}
 	//Cleaning Memory
 	destroy_bitmap(buffer);
 	destroy_bitmap(gameSprite);
+    delete playerList;
 //	destroy_sample(fireSound);
 //	delete terrainTop;
 //	delete terrainBottom;

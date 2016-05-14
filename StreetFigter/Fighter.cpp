@@ -7,16 +7,24 @@ Fighter::Fighter()
 Fighter::Fighter(BITMAP* img, Point pos) {
     frames = 0;
     state = IDLE;
+    this->alive = true;
+    this->health = 1000;
     this->image = img;
     this->position = pos;
+    this->frame_width = 60;
+    this->frame_height = 85;
 }
 
 Fighter::Fighter(BITMAP* img, float x, float y) {
     frames = 0;
     state = IDLE;
+    this->alive = true;
+    this->health = 1000;
     this->image = img;
     this->position.x = x;
     this->position.y = y;
+    this->frame_width = 60;
+    this->frame_height = 85;
 }
 
 void Fighter::SetPosition(float x,float y) {
@@ -28,19 +36,35 @@ Point Fighter::GetPosition() {
     return this->position;
 }
 
+int Fighter::GetFrameWidth() {
+    return this->frame_width;
+}
+
 bool Fighter::isAlive() {
     return this->alive;
 }
 
+int Fighter::GetHealth() {
+
+    return this->health;
+}
+
+
 void Fighter::TakeDamage(int dam) {
     this->health = this->health - dam;
     if(this->health < 0){
+        this->alive = false;
         this->health = 0;
     }
+
 }
 
 void Fighter::SetState(STATE stat) {
     this->state = stat;
+}
+
+STATE Fighter::GetState() {
+    return this->state;
 }
 
 void Fighter::Move(float i,float j) {
@@ -201,40 +225,18 @@ void Fighter::Draw(BITMAP* buffer) {
         }
         break;
 
-        //frames = 0;
-
-
-/*        while(frames < 39)
-        {
-            std::cout << frames << std::endl;
-            if(frames < 15){
-                masked_blit(this->image, buffer, 15,80,this->position.x,this->position.y,60,80);
-
-            }
-            else if(frames < 25 && frames >= 15){
-                masked_blit(this->image, buffer, 85,80,this->position.x,this->position.y,60,80);
-
-            }
-            else if(frames < 35 && frames >= 25) {
-                masked_blit(this->image, buffer, 155,80,this->position.x,this->position.y,60,80);
-
-            }
-        frames++;
-        }
-    }
-    frames = 0;
-*/
-frames = 0;
+        frames = 0;
 }
 }
 
 
 
-void Fighter::Action() {
+void Fighter::AI() {
 
 }
 
 Fighter::~Fighter()
 {
     //dtor
+    std::cout << "Fighter Destroyed\n";
 }
