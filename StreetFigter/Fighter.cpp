@@ -16,6 +16,7 @@ Fighter::Fighter(BITMAP* img, Point pos) {
 }
 
 Fighter::Fighter(BITMAP* img, float x, float y) {
+
     frames = 0;
     state = IDLE;
     this->alive = true;
@@ -52,7 +53,7 @@ int Fighter::GetHealth() {
 
 void Fighter::TakeDamage(int dam) {
     this->health = this->health - dam;
-    if(this->health < 0){
+    if(this->health <= 0){
         this->alive = false;
         this->health = 0;
     }
@@ -239,4 +240,5 @@ Fighter::~Fighter()
 {
     //dtor
     std::cout << "Fighter Destroyed\n";
+    destroy_bitmap(this->image);
 }

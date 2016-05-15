@@ -7,6 +7,30 @@ Word::Word()
 
 }
 
+
+Word::Word(std::string text, BITMAP* font_image, int x, int y)
+{
+    this->position.x = x;
+    this->position.y = y;
+    counter = 0;
+    std::transform(text.begin(), text.end(), text.begin(), ::tolower);
+    length = text.size();
+    toDisplay = length;
+    character = new Character[length];
+    frame_width = character[0].GetFrameWidth();
+    startx = x - (length*frame_width/2);
+
+    for (int i=0; i<length; i++)
+    {
+        int val = text[i];
+        val = val - 97;
+        character[i].Initialize(font_image, startx, y, val);
+        startx = startx + frame_width;
+    }
+
+}
+
+
 Word::Word(std::string text, BITMAP* font_image, Point* position)
 {
     this->position.x = position->x;

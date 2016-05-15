@@ -17,6 +17,7 @@ private:
 public:
     Word();
     Word(std::string text, BITMAP* font_image, Point* position);
+    Word(std::string text, BITMAP* font_image, int x, int y);
     ~Word();
     //void Initialize(std::string text, BITMAP* font_image, Point* position);
     void Draw(BITMAP* buffer, int animation, bool debug);

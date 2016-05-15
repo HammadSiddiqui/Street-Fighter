@@ -18,7 +18,7 @@
 1460956424 c:\users\dashi\desktop\streetfighter\streetfigter\circlelinkedlist.h
 	<iostream>
 
-1463226342 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\fighter.cpp
+1463312094 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\fighter.cpp
 	"Fighter.h"
 	<iostream>
 
@@ -28,7 +28,7 @@
 
 1460962416 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\point.h
 
-1463226626 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\main.cpp
+1463318100 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\main.cpp
 	<allegro.h>
 	<iostream>
 	"Fighter.h"
@@ -38,7 +38,7 @@
 	"Background.h"
 	"Screen.h"
 
-1463227027 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\circlelinkedlist.h
+1463318268 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\circlelinkedlist.h
 	<iostream>
 
 1462773340 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\background.h
@@ -55,13 +55,14 @@
 1462772620 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\enemy.h
 	"Fighter.h"
 
-1462769711 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\screen.cpp
+1463318402 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\screen.cpp
 	"Screen.h"
 
-1463223678 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\screen.h
+1463308652 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\screen.h
 	<allegro.h>
+	"Word.h"
 
-1457465546 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\character.cpp
+1463310690 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\character.cpp
 	"Character.h"
 	<iostream>
 
@@ -80,13 +81,13 @@
 	"Point.h"
 	"Word.h"
 
-1457263460 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\word.h
+1463308436 c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\word.h
 	"allegro.h"
 	"Point.h"
 	"Character.h"
 	<string>
 
-1457263311 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\word.cpp
+1463308710 source:c:\users\dashi\desktop\streetfighter\street-fighter\streetfigter\word.cpp
 	"Word.h"
 	<iostream>
 	<algorithm>

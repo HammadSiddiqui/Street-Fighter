@@ -39,10 +39,9 @@ void Character::Draw(BITMAP* buffer, bool debug)
 {
 
     if(character_value < 13)
-
-        masked_blit(image, buffer, character_value * frame_width, 336, position.x + 120, position.y + 20, frame_width,frame_height);
+        masked_blit(image, buffer, character_value * frame_width, 190, position.x + 120, position.y + 20, frame_width,frame_height);
     else
-        masked_blit(image, buffer, (character_value%13) * frame_width,368, position.x + 120, position.y + 20, frame_width,frame_height);
+        masked_blit(image, buffer, (character_value%13) * frame_width,222, position.x + 120, position.y + 20, frame_width,frame_height);
     if(debug == true)
     {
         line(buffer, position.x,position.y, position.x+frame_width,position.y, makecol(255, 0, 0));
