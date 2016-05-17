@@ -58,7 +58,7 @@ void SaveLoad::Load() {
     while (getline (myfile,line) )
     {
      if(token == 0){
-        area->SetCordinate(std::stoi(line)); //take care of the \n in the end
+        area->SetCordinate(atoi(line.c_str())); //take care of the \n in the end
      }
       cout << line << '\n';
     }
