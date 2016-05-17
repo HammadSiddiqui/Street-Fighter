@@ -47,6 +47,8 @@
 		<Unit filename="HealthBar.cpp" />
 		<Unit filename="HealthBar.h" />
 		<Unit filename="Point.h" />
+		<Unit filename="SaveLoad.cpp" />
+		<Unit filename="SaveLoad.h" />
 		<Unit filename="Screen.cpp" />
 		<Unit filename="Screen.h" />
 		<Unit filename="Word.cpp" />

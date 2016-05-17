@@ -23,6 +23,7 @@ class Fighter
       //virtual void Update();
         int GetFrameWidth();
         virtual void AI();
+        void PlaySounds();
 
 
     protected:
@@ -34,6 +35,7 @@ class Fighter
         STATE state;
         Point position;
         int frames;
+        SAMPLE *fireSound;
 
     private:
 };

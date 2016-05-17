@@ -13,6 +13,8 @@ Fighter::Fighter(BITMAP* img, Point pos) {
     this->position = pos;
     this->frame_width = 60;
     this->frame_height = 85;
+    fireSound = load_sample("sounds/punch.wav");
+
 }
 
 Fighter::Fighter(BITMAP* img, float x, float y) {
@@ -26,6 +28,7 @@ Fighter::Fighter(BITMAP* img, float x, float y) {
     this->position.y = y;
     this->frame_width = 60;
     this->frame_height = 85;
+    fireSound = load_sample("sounds/punch.wav");
 }
 
 void Fighter::SetPosition(float x,float y) {
@@ -66,6 +69,16 @@ void Fighter::SetState(STATE stat) {
 
 STATE Fighter::GetState() {
     return this->state;
+}
+
+void Fighter::PlaySounds() {
+    switch(state) {
+    case PUNCH:
+        play_sample(fireSound, 255, 128, 1000, 0);
+        break;
+    default:
+        break;
+    }
 }
 
 void Fighter::Move(float i,float j) {
@@ -240,5 +253,5 @@ Fighter::~Fighter()
 {
     //dtor
     std::cout << "Fighter Destroyed\n";
-    destroy_bitmap(this->image);
+    this->image = NULL;
 }

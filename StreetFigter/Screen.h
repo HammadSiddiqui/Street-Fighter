@@ -12,6 +12,7 @@ class Screen
         void SetState(enum SCREEN);
         SCREEN GetState();
         void SetWord(Word*);
+//        void SetWord(std::string);
 
     protected:
         BITMAP* image;

@@ -10,6 +10,7 @@ class Background
         ~Background();
         void Move(float);
         int GetCordinate();
+        void SetCordinate(int);
 
     protected:
 

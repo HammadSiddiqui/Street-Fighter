@@ -6,7 +6,6 @@ Screen::Screen(BITMAP* img) {
     this->image = img;
     this->position.x = SCREEN_W/2;
     this->position.y = SCREEN_H/2;
-//    word = new Word("Game Over",img,this->position)
 
 }
 
@@ -20,7 +19,13 @@ Screen::~Screen()
 {
     //dtor
 }
-
+/*
+void Screen::SetWord(std::string wrd)
+{
+    word = new Word(wrd,this->image,this->position.x, this->position.y);
+    if(word == NULL)
+}
+*/
 void Screen::SetWord(Word* wrd){
     this->word = wrd;
 }
@@ -36,7 +41,7 @@ SCREEN Screen::GetState() {
 void Screen::Draw(BITMAP* buffer) {
     if(state == SPLASH)
     {
-        masked_blit(image,buffer,0,290,0,0,SCREEN_W - 128,SCREEN_H - 32);
+        masked_blit(image,buffer,0,290,0,0,SCREEN_W ,SCREEN_H );
     }
     else if(state == GAMEOVER)
     {

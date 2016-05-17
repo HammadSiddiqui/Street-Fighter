@@ -87,7 +87,7 @@ void Enemy::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 300,640,this->position.x+10.0f,this->position.y - 18.0f,60,80);
                 this->Move(0.4f,0);
             }
-            else if(frames%400 <= 300 && frames%400 >= 250) {
+            else if(frames%400 < 300 && frames%400 >= 250) {
                 masked_blit(this->image, buffer, 365,640,this->position.x+10.0f,this->position.y - 9.0f,60,80);
                 this->Move(0.4f,0);
             }
@@ -95,6 +95,7 @@ void Enemy::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 440,640,this->position.x+10.0f,this->position.y, 60, 80);
                 this->Move(0.4f,0);
             }
+
             frames++;
         break;
 
@@ -118,7 +119,7 @@ void Enemy::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 155,240,this->position.x,this->position.y,60,80);
                 this->Move(0.2f,0);
             }
-            else if(frames%200 <= 160 && frames%200 >= 120) {
+            else if(frames%200 < 160 && frames%200 >= 120) {
                 masked_blit(this->image, buffer, 85,240,this->position.x,this->position.y,60,80);
                 this->Move(0.2f,0);
             }
@@ -126,6 +127,7 @@ void Enemy::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 13,240,this->position.x,this->position.y,60,80);
                 this->Move(0.2f,0);
             }
+
             frames++;
             break;
 
@@ -144,7 +146,7 @@ void Enemy::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 365,240,this->position.x,this->position.y,60,80);
                 this->Move(-0.2f,0);
             }
-            else if(frames%200 <= 160 && frames%200 >= 120) {
+            else if(frames%200 < 160 && frames%200 >= 120) {
                 masked_blit(this->image, buffer, 295,240,this->position.x,this->position.y,60,80);
                 this->Move(-0.2f,0);
             }

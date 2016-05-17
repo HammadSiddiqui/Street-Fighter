@@ -21,6 +21,7 @@ public:
     void Pop();
     void Insert(Type);
     int GetLength();
+    Node<Type>* GetNode(int);
     void CollisionDetection(Node<Type>*);
     void CollisionFunction();
     void DeleteDead();
@@ -37,7 +38,7 @@ private:
 template <typename Type>
 CircleLinkedList<Type>::CircleLinkedList()
 {
-    std::cout << "Circular Singly Linked List Created" << std::endl;
+    std::cout << "Linked List Created" << std::endl;
     this->head = NULL;
     length = 0;
 }
@@ -47,10 +48,9 @@ CircleLinkedList<Type>::~CircleLinkedList()
     while(this->length != 0)
     {
         this->Pop();
-        std::cout << length << std::endl;
     }
 
-    std::cout << "Circular Singly Linked List Destroyed" << std::endl;
+    std::cout << "Linked List Destroyed" << std::endl;
 }
 
 //Head Does not change in QUEUE
@@ -98,6 +98,7 @@ void CircleLinkedList<Type>::Pop()
 
         if(head != NULL) {
             head = NULL;
+            delete temp->data;
             delete temp;
         }
         length = 0;
@@ -112,10 +113,25 @@ void CircleLinkedList<Type>::Pop()
         }
         temp2->next = head->next;
         head = head->next;
+        delete temp->data;
         delete temp;
         length--;
     }
 }
+
+
+template <typename Type>
+Node<Type>* CircleLinkedList<Type>::GetNode(int i) {
+
+    Node<Type>* temp = head;
+    while(i != 0){
+        temp = temp->next;
+        i--;
+    }
+    return temp;
+
+}
+
 
 template <typename Type>
 Node<Type>* CircleLinkedList<Type>::GetHead()
@@ -156,12 +172,15 @@ void CircleLinkedList<Type>::CollisionDetection(Node<Type>* enemy)
 {
 
     Node<Type>* fighter = this->head;
-
+    if(fighter == enemy)  {
+        return;
+    }
     //Collision Detection when Bounding boxes overlap and the sprites are in attack state.
     if((fighter->data->GetState() == PUNCH || fighter->data->GetState() == KICK) &&
             ((fighter->data->GetPosition().x + fighter->data->GetFrameWidth() - enemy->data->GetPosition().x) > 10))
     {
         enemy->data->TakeDamage(10);
+        fighter->data->PlaySounds();
 
     }
     else if((enemy->data->GetState() == PUNCH || enemy->data->GetState() == KICK) &&
@@ -184,8 +203,6 @@ void CircleLinkedList<Type>::DeleteDead()
     else
     {
 
-
-        int nodePos = 0;
         Node<Type>* temp = head;
         //if our player is dead, which is present at the head of the list
         if(head->data->isAlive() == false)
@@ -229,7 +246,7 @@ void CircleLinkedList<Type>::DeleteDead()
 
                 }
                 temp = temp->next;
-                nodePos++;
+
 
             }
             //this has to be especially called again as the LAST NODE is not checked in the while loop above in a Circled linked list

@@ -26,12 +26,46 @@ SaveLoad::~SaveLoad()
 void SaveLoad::Save() {
   ofstream savefile;
   savefile.open ("saved.txt");
-//  int playerPos = this->lst->GetHead()->data->GetPosition().x;
-//  string strbuffer = std::to_string(12);
-  savefile << "Hello world\n";
-//myfile << "Writing this to a file.\n";
+  savefile << area->GetCordinate() << "\n";
+  //Fighter Data Start
+  int playerPos = this->lst->GetHead()->data->GetPosition().x;
+  savefile << playerPos << "\n";
+  //Fighter Health
+  int playerHealth = this->lst->GetHead()->data->GetHealth();
+  savefile << playerHealth << "\n";
+
+
+  //Fighter Data End
+
+  for(int i = 1; i < lst->GetLength(); i++)
+  {
+      savefile << lst->GetNode(i)->data->GetPosition().x << "\n";
+
+  }
+
   savefile.close();
-  std::cout << "Hola";
+  std::cout << "Game Saved\n";
   return;
+
+}
+
+void SaveLoad::Load() {
+  string line;
+  int token = 0;
+  ifstream myfile ("saved.txt");
+  if (myfile.is_open())
+  {
+    while (getline (myfile,line) )
+    {
+     if(token == 0){
+        area->SetCordinate(std::stoi(line)); //take care of the \n in the end
+     }
+      cout << line << '\n';
+    }
+    myfile.close();
+  }
+
+  else cout << "Unable to open file";
+
 
 }
