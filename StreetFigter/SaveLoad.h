@@ -1,6 +1,7 @@
 #pragma once
 #include "CircleLinkedList.h"
 #include "Background.h"
+#include "Enemy.h"
 class SaveLoad
 {
     friend class CircleLinkedList<Fighter>;
@@ -8,7 +9,7 @@ class SaveLoad
         SaveLoad();
         SaveLoad(CircleLinkedList<Fighter*>*, Background*);
         void Save();
-        void Load();
+        void Load(BITMAP*);
         ~SaveLoad();
 
     protected:

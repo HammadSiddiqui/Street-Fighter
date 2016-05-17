@@ -22,9 +22,7 @@ END_OF_FUNCTION(increment_speed_counter);
 
 int main(int argc, char* argv[])
 {
-    //Enumerater for Different types of screen
 
-    //  SCREEN screenMode = SPLASH;
     srand(time(0));
     if (allegro_init() != 0)
     {
@@ -72,14 +70,14 @@ int main(int argc, char* argv[])
 
     /*Fighter Image*/
     BITMAP* gameSprite = load_bitmap("images/ken.bmp", NULL);
-    /*Enemy Image*/
+    /*Enemy Images*/
     BITMAP* EnemySprite[3];
     EnemySprite[0] = load_bitmap("images/enemy1.bmp", NULL);
     EnemySprite[1] = load_bitmap("images/enemy2.bmp", NULL);
     EnemySprite[2] = load_bitmap("images/enemy3.bmp", NULL);
     //Game Health Bar
     BITMAP* ui = load_bitmap("images/ui.bmp", NULL);
-    //Final Word
+    //Final Words
     Word* gameOver = new Word("GAMEOVER",ui,(SCREEN_W/2) - 100,(SCREEN_H/2) - 64);
     Word* gameComplete = new Word("Finish",ui,(SCREEN_W/2) - 100,(SCREEN_H/2) - 64);
 
@@ -94,12 +92,12 @@ int main(int argc, char* argv[])
     screenMode->SetState(SPLASH);
     Background *area = new Background(background);
     Fighter *player = new Fighter(gameSprite, 150.0,400.0);
-    Enemy *kasungai = new Enemy(EnemySprite[0], 500.0, 400.0);
+  //  Enemy *kasungai = new Enemy(EnemySprite[0], 500.0, 400.0);
     HealthBar* healthBar = new HealthBar(ui,1,1);
-    kasungai->SetTarget(player);
+//    kasungai->SetTarget(player);
     CircleLinkedList<Fighter*>* playerList = new CircleLinkedList<Fighter*>;
     playerList->Insert(player);
-    playerList->Insert(kasungai);
+  //  playerList->Insert(kasungai);
     SaveLoad *saveload = new SaveLoad(playerList, area);
 
     STATE state;
@@ -216,7 +214,7 @@ int main(int argc, char* argv[])
             if(area->GetCordinate() < 800){
                switch(area->GetCordinate())
                 {
-                case 120:
+                case 0:
                     if(enemyCounter == 0)
                     {
 
@@ -298,23 +296,10 @@ int main(int argc, char* argv[])
         draw_sprite(screen, buffer, 0, 0);
         clear_bitmap(buffer);
 
-
-        /*
-                terrainBottom->Draw(buffer);
-                terrainTop->Draw(buffer);
-
-                objects->DrawAll(buffer, false);
-
-        		draw_sprite(screen, buffer, 0, 0);
-        		clear_bitmap(buffer);
-                objects->CleanAll();
-                playerList->DeleteDead();
-        */
-
     }
 
     saveload->Save();
-    saveload->Load();
+
     //Cleaning Memory
 
     delete saveload;

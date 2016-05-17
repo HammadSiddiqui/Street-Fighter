@@ -49,7 +49,7 @@ void SaveLoad::Save() {
 
 }
 
-void SaveLoad::Load() {
+void SaveLoad::Load(BITMAP* EnemySprite) {
   string line;
   int token = 0;
   ifstream myfile ("saved.txt");
@@ -58,9 +58,21 @@ void SaveLoad::Load() {
     while (getline (myfile,line) )
     {
      if(token == 0){
-        area->SetCordinate(atoi(line.c_str())); //take care of the \n in the end
+        //first token is the xCoordinate of the background
+        area->SetCordinate(atoi(line.c_str()));
+     }
+     else if (token == 1)
+     {
+         //Second token has the position of the Fighter
+        lst->GetHead()->data->SetPosition(float(atoi(line.c_str())), 400.0f);
+     }
+     else {
+        Enemy *enemyObj = new Enemy(&EnemySprite[rand()%3], float((atoi(line.c_str()))), 400.0f);
+        enemyObj->SetTarget(lst->GetHead()->data);
+        lst->Insert(enemyObj);
      }
       cout << line << '\n';
+      token++;
     }
     myfile.close();
   }
