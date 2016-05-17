@@ -1,5 +1,5 @@
 #include "Screen.h"
-
+#include <iostream>
 
 Screen::Screen(BITMAP* img) {
 
@@ -19,17 +19,19 @@ Screen::~Screen()
 {
     //dtor
 }
-/*
+
 void Screen::SetWord(std::string wrd)
 {
-    word = new Word(wrd,this->image,this->position.x, this->position.y);
+
+    word = new Word(wrd,this->image,&this->position);
     if(word == NULL)
+        std::cout << "Word in NULL\n";
 }
-*/
+/*
 void Screen::SetWord(Word* wrd){
     this->word = wrd;
 }
-
+*/
 void Screen::SetState(enum SCREEN st) {
     this->state = st;
 }
@@ -46,5 +48,8 @@ void Screen::Draw(BITMAP* buffer) {
     else if(state == GAMEOVER)
     {
         word->Draw(buffer, 1,false);
+    }
+    else if (state == MAINMENU){
+        word->Draw(buffer,0,false);
     }
 }

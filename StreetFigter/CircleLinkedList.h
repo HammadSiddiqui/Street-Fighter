@@ -179,14 +179,16 @@ void CircleLinkedList<Type>::CollisionDetection(Node<Type>* enemy)
     if((fighter->data->GetState() == PUNCH || fighter->data->GetState() == KICK) &&
             ((fighter->data->GetPosition().x + fighter->data->GetFrameWidth() - enemy->data->GetPosition().x) > 10))
     {
-        enemy->data->TakeDamage(10);
+        //We will give our enemies more damage
+        enemy->data->TakeDamage(3);
         fighter->data->PlaySounds();
 
     }
     else if((enemy->data->GetState() == PUNCH || enemy->data->GetState() == KICK) &&
             ((fighter->data->GetPosition().x + fighter->data->GetFrameWidth() - enemy->data->GetPosition().x) > 0))
     {
-        fighter->data->TakeDamage(10);
+        fighter->data->TakeDamage(1);
+        enemy->data->PlaySounds();
     }
 
 }
@@ -195,6 +197,7 @@ void CircleLinkedList<Type>::CollisionDetection(Node<Type>* enemy)
 template <typename Type>
 void CircleLinkedList<Type>::DeleteDead()
 {
+    //If list is empty
     if(this->head == NULL)
     {
         return;
@@ -231,7 +234,7 @@ void CircleLinkedList<Type>::DeleteDead()
         }
         else
         {
-            //else we loop through all the rest of the nodes and remove the dead nodes.
+            //else we loop through all the rest of the nodes and remove the dead enemy nodes.
             while(temp->next != head)
             {
 
@@ -270,7 +273,7 @@ void CircleLinkedList<Type>::DeleteDead()
 template <typename Type>
 void CircleLinkedList<Type>::CollisionFunction()
 {
-    //Runs Artificial Intelligence on Enemies. Head is our Player, rest are enemies.
+    //Runs Collision detection on Fighter and Enemies
     if (head == NULL or head->next == head)
     {
         return;

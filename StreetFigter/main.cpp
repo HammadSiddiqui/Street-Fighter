@@ -77,9 +77,7 @@ int main(int argc, char* argv[])
     EnemySprite[2] = load_bitmap("images/enemy3.bmp", NULL);
     //Game Health Bar
     BITMAP* ui = load_bitmap("images/ui.bmp", NULL);
-    //Final Words
-    Word* gameOver = new Word("GAMEOVER",ui,(SCREEN_W/2) - 100,(SCREEN_H/2) - 64);
-    Word* gameComplete = new Word("Finish",ui,(SCREEN_W/2) - 100,(SCREEN_H/2) - 64);
+
 
     if(gameSprite == NULL or background == NULL or EnemySprite == NULL or ui == NULL)
     {
@@ -87,42 +85,40 @@ int main(int argc, char* argv[])
         return 1;
 
     }
+    //CREATING GLOBAL INSTANCES OF CLASSES
 
     Screen *screenMode = new Screen(ui);
-    screenMode->SetState(SPLASH);
-    Background *area = new Background(background);
-    Fighter *player = new Fighter(gameSprite, 150.0,400.0);
-  //  Enemy *kasungai = new Enemy(EnemySprite[0], 500.0, 400.0);
-    HealthBar* healthBar = new HealthBar(ui,1,1);
-//    kasungai->SetTarget(player);
-    CircleLinkedList<Fighter*>* playerList = new CircleLinkedList<Fighter*>;
-    playerList->Insert(player);
-  //  playerList->Insert(kasungai);
-    SaveLoad *saveload = new SaveLoad(playerList, area);
+    screenMode->SetState(INITIALIZE);
+    Background *area;
+    Fighter *player;
+    HealthBar* healthBar;
+    CircleLinkedList<Fighter*>* playerList;
+    SaveLoad *saveload;
 
-    STATE state;
-    state = IDLE;
     int enemyCounter = 0;
 
     srand((unsigned)time(0));
-    //y = 210 + (rand() % (int)(110));
-
-    //Point p(SCREEN_W/2, 32);
-
-
-
-    //  LinkedList* objects = new LinkedList(gameSprite);
-
-
-
-    // Terrain* terrainTop = new Terrain(gameSprite, 0, -640, 0, 0);
-    //Terrain* terrainBottom = new Terrain(gameSprite, 0, 0, 0, 0);
-
 
     int spaceDelay = 0;
-
+    int restartCount = 0;
     while(!key[KEY_ESC])
     {
+
+        if(screenMode->GetState() == INITIALIZE)
+        {
+                /*
+                * All the objects are instantiated within this screen mode. This is crucial for
+                * Game restart without discontinuity
+                */
+                player = new Fighter(gameSprite, 150.0,400.0);
+                area = new Background(background);
+                healthBar = new HealthBar(ui,1,1);
+                playerList = new CircleLinkedList<Fighter*>;
+                playerList->Insert(player);
+                saveload = new SaveLoad(playerList, area);
+                screenMode->SetState(SPLASH);
+        }
+
 
         //Add your game logic here
         if(screenMode->GetState() == SPLASH)
@@ -131,24 +127,36 @@ int main(int argc, char* argv[])
             screenMode->Draw(buffer);
             if(spaceDelay == 1500 || key[KEY_SPACE])
             {
-
-                screenMode->SetState(GAMEPLAY);
+                screenMode->SetWord("N for new Game, L for load");
+                screenMode->SetState(MAINMENU);
 
             }
             spaceDelay++;
         }
+        else if(screenMode->GetState() == MAINMENU)
+        {
+            screenMode->Draw(buffer);
+            if(key[KEY_L])
+            {
+                saveload->Load(*EnemySprite);
+                screenMode->SetState(GAMEPLAY);
+            }
+            else if (key[KEY_N]){
+                screenMode->SetState(GAMEPLAY);
+            }
 
+        }
 
         else if (screenMode->GetState() == GAMEPLAY)
         {
             if(player->isAlive() == false)
             {
+                screenMode->SetWord("GAMEOVER");
                 screenMode->SetState(GAMEOVER);
             }
 
             while (speed_counter > 0)
             {
-
                 playerList->AI();
                 playerList->CollisionFunction();
                 if(key[KEY_RIGHT]) // If the user hits the right key, change the picture's X coordinate
@@ -189,67 +197,46 @@ int main(int argc, char* argv[])
 
 
                 spaceDelay++;
-                /*
-                            if(terrainTop->GetPosition()->y>640)
-                            {
-                                cout<<"\nTerrainTop Y:"<<terrainTop->GetPosition()->y;
-                                delete terrainTop;
-                                terrainTop = new Terrain(gameSprite, 0, -640, 0, 0);
-                            }
-                            if(terrainBottom->GetPosition()->y>640)
-                            {
-                                cout<<"\nTerrainBottom Y:"<<terrainBottom->GetPosition()->y;
-                                delete terrainBottom;
-                                terrainBottom = new Terrain(gameSprite, 0, -640, 0, 0);
-                            }
 
-                            objects->MoveAll();
-                            terrainTop->Move();
-                            terrainBottom->Move();
-                            CreateObjects(objects, gameSprite);
-
-
-                            speed_counter--;
-                            */
-            if(area->GetCordinate() < 800){
-               switch(area->GetCordinate())
+                if(area->GetCordinate() < 800)
                 {
-                case 0:
-                    if(enemyCounter == 0)
+                    switch(area->GetCordinate())
                     {
+                    case 10:
+                        if(enemyCounter == 0)
+                        {
+                            Enemy *enemyObj = new Enemy(EnemySprite[rand()%3], 800, 400);
+                            enemyObj->SetTarget(player);
+                            playerList->Insert(enemyObj);
 
-                        Enemy *enemyObj = new Enemy(EnemySprite[rand()%3], 800, 400);
-                        enemyObj->SetTarget(player);
-                        playerList->Insert(enemyObj);
+                        }
+                        enemyCounter = 1;
+                        break;
 
+                    case 140:
+                        if(enemyCounter == 1)
+                        {
+                            Enemy *enemyObj2 = new Enemy(EnemySprite[rand()%3], 800, 400);
+                            enemyObj2->SetTarget(player);
+                            playerList->Insert(enemyObj2);
+                        }
+                        enemyCounter = 2;
+                        break;
+
+                    default:
+                        if(playerList->GetLength() < 2)
+                        {
+                            if(rand()%500 <= 10)
+                            {
+                                Enemy *enemyObj2 = new Enemy(EnemySprite[rand()%3], 800, 400);
+                                enemyObj2->SetTarget(player);
+                                playerList->Insert(enemyObj2);
+                            }
+                        }
+
+                        break;
                     }
-                    enemyCounter = 1;
-                    break;
-
-                case 140:
-                    if(enemyCounter == 1)
-                    {
-                        Enemy *enemyObj2 = new Enemy(EnemySprite[rand()%3], 800, 400);
-                        enemyObj2->SetTarget(player);
-                        playerList->Insert(enemyObj2);
-                    }
-                    enemyCounter = 2;
-                    break;
-
-                default:
-                       if(playerList->GetLength() < 2)
-                       {
-                           if(rand()%500 <= 2)
-                           {
-                               Enemy *enemyObj2 = new Enemy(EnemySprite[rand()%3], 800, 400);
-                               enemyObj2->SetTarget(player);
-                               playerList->Insert(enemyObj2);
-                           }
-                       }
-
-                    break;
                 }
-}
 
 
                 if(player->GetPosition().x >= 500)
@@ -262,12 +249,13 @@ int main(int argc, char* argv[])
                     player->Move(1.0f, 0.0f);
                     area->Move(-1.8f);
                 }
-                else if(area->GetCordinate() >= 950){
+                else if(area->GetCordinate() >= 950)
+                {
+                    screenMode->SetWord("FIGHT COMPLETE");
                     screenMode->SetState(GAMEOVER);
                 }
 
                 speed_counter--;
-
                 healthBar->Move(player->GetHealth());
 
             }
@@ -281,16 +269,11 @@ int main(int argc, char* argv[])
         }
         else if (screenMode->GetState() == GAMEOVER)
         {
-
-            if(player->isAlive() == false)
-            {
-                //screenMode->SetWord(gameOver);
-                screenMode->SetWord(gameOver);
-            }
-            else{
-                screenMode->SetWord(gameComplete);
-            }
             screenMode->Draw(buffer);
+            if(key[KEY_R])
+            {
+                screenMode->SetState(INITIALIZE);
+            }
         }
 
         draw_sprite(screen, buffer, 0, 0);

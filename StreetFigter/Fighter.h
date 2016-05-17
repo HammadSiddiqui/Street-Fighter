@@ -19,6 +19,7 @@ class Fighter
         STATE GetState();
         void TakeDamage(int);
         int GetHealth();
+        void SetHealth(int);
         void Move(float,float);
       //virtual void Update();
         int GetFrameWidth();

@@ -19,7 +19,6 @@ HealthBar::~HealthBar()
 }
 void HealthBar::Move(int damage)
 {
-
     healthfactor = damage;
     if(healthfactor < 0){
         healthfactor = 0;

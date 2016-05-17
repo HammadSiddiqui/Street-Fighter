@@ -1,7 +1,7 @@
 #pragma once
 #include <allegro.h>
 #include "Word.h"
-enum SCREEN{SPLASH, MAINMENU, GAMEPLAY, GAMEOVER, FINISH};
+enum SCREEN{SPLASH, MAINMENU, GAMEPLAY, GAMEOVER, INITIALIZE};
 class Screen
 {
     public:
@@ -11,8 +11,8 @@ class Screen
         void Draw(BITMAP*);
         void SetState(enum SCREEN);
         SCREEN GetState();
-        void SetWord(Word*);
-//        void SetWord(std::string);
+     //   void SetWord(Word*);
+        void SetWord(std::string);
 
     protected:
         BITMAP* image;

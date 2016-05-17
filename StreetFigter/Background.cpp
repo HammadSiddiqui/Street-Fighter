@@ -35,5 +35,5 @@ void Background::SetCordinate(int x) {
 
 void Background::Draw(BITMAP* buffer) {
 
-        masked_blit(this->image, buffer, xCordinate,0,0,0,SCREEN_W,SCREEN_H);
+        masked_blit(this->image, buffer, xCordinate,-1,0,0,SCREEN_W,SCREEN_H);
 }

@@ -8,7 +8,7 @@ Fighter::Fighter(BITMAP* img, Point pos) {
     frames = 0;
     state = IDLE;
     this->alive = true;
-    this->health = 1000;
+    this->health = 100;
     this->image = img;
     this->position = pos;
     this->frame_width = 60;
@@ -22,7 +22,7 @@ Fighter::Fighter(BITMAP* img, float x, float y) {
     frames = 0;
     state = IDLE;
     this->alive = true;
-    this->health = 1000;
+    this->health = 100;
     this->image = img;
     this->position.x = x;
     this->position.y = y;
@@ -51,6 +51,10 @@ bool Fighter::isAlive() {
 int Fighter::GetHealth() {
 
     return this->health;
+}
+
+void Fighter::SetHealth(int x) {
+    this->health = x;
 }
 
 
