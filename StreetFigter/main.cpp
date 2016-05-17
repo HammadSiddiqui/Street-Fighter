@@ -87,6 +87,9 @@ int main(int argc, char* argv[])
     }
     //CREATING GLOBAL INSTANCES OF CLASSES
 
+    SAMPLE *gameLose = load_sample("sounds/lost.wav");
+    if (!gameLose)
+         std::cout << "Losing Sound not loaded\n";
     Screen *screenMode = new Screen(ui);
     screenMode->SetState(INITIALIZE);
     Background *area;
@@ -127,7 +130,7 @@ int main(int argc, char* argv[])
             screenMode->Draw(buffer);
             if(spaceDelay == 1500 || key[KEY_SPACE])
             {
-                screenMode->SetWord("N for new Game, L for load");
+                screenMode->SetWord("N New Game L load");
                 screenMode->SetState(MAINMENU);
 
             }
@@ -153,6 +156,7 @@ int main(int argc, char* argv[])
             {
                 screenMode->SetWord("GAMEOVER");
                 screenMode->SetState(GAMEOVER);
+                play_sample(gameLose,255, 128, 1000, 0);
             }
 
             while (speed_counter > 0)
@@ -253,6 +257,7 @@ int main(int argc, char* argv[])
                 {
                     screenMode->SetWord("FIGHT COMPLETE");
                     screenMode->SetState(GAMEOVER);
+                    //Play sound here
                 }
 
                 speed_counter--;

@@ -38,5 +38,6 @@ class Fighter
         int frames;
         SAMPLE *fireSound;
 
+
     private:
 };

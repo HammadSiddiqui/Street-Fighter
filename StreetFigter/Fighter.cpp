@@ -15,6 +15,7 @@ Fighter::Fighter(BITMAP* img, Point pos) {
     this->frame_height = 85;
     fireSound = load_sample("sounds/punch.wav");
 
+
 }
 
 Fighter::Fighter(BITMAP* img, float x, float y) {
@@ -76,13 +77,7 @@ STATE Fighter::GetState() {
 }
 
 void Fighter::PlaySounds() {
-    switch(state) {
-    case PUNCH:
-        play_sample(fireSound, 255, 128, 1000, 0);
-        break;
-    default:
-        break;
-    }
+    play_sample(fireSound, 255, 128, 1000, 0);
 }
 
 void Fighter::Move(float i,float j) {

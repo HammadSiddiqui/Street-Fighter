@@ -96,7 +96,8 @@ void CircleLinkedList<Type>::Pop()
     if (head == NULL || head->next == head)
     {
 
-        if(head != NULL) {
+        if(head != NULL)
+        {
             head = NULL;
             delete temp->data;
             delete temp;
@@ -119,12 +120,15 @@ void CircleLinkedList<Type>::Pop()
     }
 }
 
-
+//Returns the pointer to a specific node index wise
+//Used in SaveLoad
 template <typename Type>
-Node<Type>* CircleLinkedList<Type>::GetNode(int i) {
+Node<Type>* CircleLinkedList<Type>::GetNode(int i)
+{
 
     Node<Type>* temp = head;
-    while(i != 0){
+    while(i != 0)
+    {
         temp = temp->next;
         i--;
     }
@@ -146,6 +150,7 @@ int CircleLinkedList<Type>::GetLength()
     return length;
 }
 
+//Calls draw on all nodes
 template <typename Type>
 void CircleLinkedList<Type>::Draw(BITMAP* buffer)
 {
@@ -167,12 +172,14 @@ void CircleLinkedList<Type>::Draw(BITMAP* buffer)
 
 }
 
+//CHECKS for collision
 template <typename Type>
 void CircleLinkedList<Type>::CollisionDetection(Node<Type>* enemy)
 {
 
     Node<Type>* fighter = this->head;
-    if(fighter == enemy)  {
+    if(fighter == enemy)
+    {
         return;
     }
     //Collision Detection when Bounding boxes overlap and the sprites are in attack state.
@@ -218,7 +225,8 @@ void CircleLinkedList<Type>::DeleteDead()
                 head = NULL;
                 delete temp;
             }
-            else{
+            else
+            {
 
                 Node<Type>* temp2 = head;
                 while(temp2->next != head)

@@ -1,7 +1,8 @@
 #include "Screen.h"
 #include <iostream>
 
-Screen::Screen(BITMAP* img) {
+Screen::Screen(BITMAP* img)
+{
 
     this->image = img;
     this->position.x = SCREEN_W/2;
@@ -32,24 +33,28 @@ void Screen::SetWord(Word* wrd){
     this->word = wrd;
 }
 */
-void Screen::SetState(enum SCREEN st) {
+void Screen::SetState(enum SCREEN st)
+{
     this->state = st;
 }
 
-SCREEN Screen::GetState() {
+SCREEN Screen::GetState()
+{
     return this->state;
 }
 
-void Screen::Draw(BITMAP* buffer) {
+void Screen::Draw(BITMAP* buffer)
+{
     if(state == SPLASH)
     {
-        masked_blit(image,buffer,0,290,0,0,SCREEN_W ,SCREEN_H );
+        masked_blit(image,buffer,0,290,0,0,SCREEN_W,SCREEN_H );
     }
     else if(state == GAMEOVER)
     {
         word->Draw(buffer, 1,false);
     }
-    else if (state == MAINMENU){
-        word->Draw(buffer,0,false);
+    else if (state == MAINMENU)
+    {
+        word->Draw(buffer,1,false);
     }
 }

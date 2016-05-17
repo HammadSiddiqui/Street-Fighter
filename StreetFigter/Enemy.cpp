@@ -154,6 +154,7 @@ void Enemy::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 225,240,this->position.x,this->position.y,60,80);
                 this->Move(-0.2f,0);
             }
+
         frames++;
         break;
     case KICK:
@@ -215,9 +216,8 @@ void Enemy::Draw(BITMAP* buffer) {
                 masked_blit(this->image, buffer, 225,80,this->position.x,this->position.y,60,80);
             }
         frames++;
-        }
         break;
-
-    frames = 0;
+        }
+        frames = 0;
 }
 }
