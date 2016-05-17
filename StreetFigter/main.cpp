@@ -6,6 +6,7 @@
 #include "CircleLinkedList.h"
 #include "Background.h"
 #include "Screen.h"
+#include "SaveLoad.h"
 
 volatile long speed_counter = 0; // A long integer which will store the value of the speed counter.
 volatile long objectCounter = 0;
@@ -66,8 +67,7 @@ int main(int argc, char* argv[])
     BITMAP* buffer = create_bitmap(SCREEN_W, SCREEN_H);
     /*Background*/
     BITMAP* background = load_bitmap("images/Area1.bmp", NULL);
-    /*Splash Image*/
-    BITMAP* splashImg = load_bitmap("images/splash.bmp", NULL);
+
     /*Fighter Image*/
     BITMAP* gameSprite = load_bitmap("images/ken.bmp", NULL);
     /*Enemy Image*/
@@ -77,9 +77,10 @@ int main(int argc, char* argv[])
     EnemySprite[2] = load_bitmap("images/enemy3.bmp", NULL);
     //Game Health Bar
     BITMAP* ui = load_bitmap("images/ui.bmp", NULL);
+    //Final Word
     Word* gameOver = new Word("GAMEOVER",ui,SCREEN_W/2,SCREEN_H/2);
 
-    if(gameSprite == NULL or background == NULL or EnemySprite == NULL or splashImg == NULL or ui == NULL)
+    if(gameSprite == NULL or background == NULL or EnemySprite == NULL or ui == NULL)
     {
         allegro_message("Sprite not loaded\n");
         return 1;
@@ -96,6 +97,7 @@ int main(int argc, char* argv[])
     CircleLinkedList<Fighter*>* playerList = new CircleLinkedList<Fighter*>;
     playerList->Insert(player);
     playerList->Insert(kasungai);
+    SaveLoad *saveload = new SaveLoad(playerList, area);
 
     STATE state;
     state = IDLE;
@@ -297,16 +299,21 @@ int main(int argc, char* argv[])
         */
 
     }
+
+    saveload->Save();
     //Cleaning Memory
+    delete saveload;
+    delete playerList;
     destroy_bitmap(buffer);
     destroy_bitmap(gameSprite);
-    destroy_bitmap(splashImg);
+//    destroy_bitmap(splashImg);
+    destroy_bitmap(ui);
     destroy_bitmap(background);
     for(int i = 0; i < 3; i++)
     {
         destroy_bitmap(EnemySprite[i]);
     }
-    delete playerList;
+
 //	destroy_sample(fireSound);
 //	delete terrainTop;
 //	delete terrainBottom;
@@ -317,20 +324,4 @@ int main(int argc, char* argv[])
 
 }
 END_OF_MAIN();
-/*
-void CreateObjects(LinkedList* objects, BITMAP* gameSprite)
-{
-    if(objectCounter%200 == 0)
-    {
-        Viper* viper = new Viper(gameSprite, 192, 0, 64, 64, (rand() % (int)(SCREEN_W)), -128, 21);
-        viper->SetTarget(player);
-        objects->Append(viper);
-    }
-    if(objectCounter%100 == 0)
-    {
-        Cobra* cobra = new Cobra(gameSprite, 384, 0, 64, 64, (rand() % (int)(SCREEN_W)), -128, 22);
-        cobra->SetTarget(player);
-        objects->Append(cobra);
-    }
-}
-*/
+

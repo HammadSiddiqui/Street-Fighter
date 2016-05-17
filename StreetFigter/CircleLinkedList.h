@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
-
+#include "allegro.h"
+#include "Fighter.h"
 
 template <typename Type>
 struct Node
@@ -48,6 +49,7 @@ CircleLinkedList<Type>::~CircleLinkedList()
         this->Pop();
         std::cout << length << std::endl;
     }
+
     std::cout << "Circular Singly Linked List Destroyed" << std::endl;
 }
 
@@ -99,6 +101,7 @@ void CircleLinkedList<Type>::Pop()
             delete temp;
         }
         length = 0;
+        return;
     }
     else
     {
@@ -176,7 +179,7 @@ void CircleLinkedList<Type>::DeleteDead()
     if(this->head == NULL)
     {
         return;
-        std::cout << "Problem 0\n";
+
     }
     else
     {
@@ -196,6 +199,7 @@ void CircleLinkedList<Type>::DeleteDead()
                 delete temp;
             }
             else{
+
                 Node<Type>* temp2 = head;
                 while(temp2->next != head)
                 {
