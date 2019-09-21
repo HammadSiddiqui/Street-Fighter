@@ -1,17 +1,17 @@
 #pragma once
-#include"allegro.h"
-#include"Point.h"
+#include "Point.h"
 #include "Word.h"
+#include "allegro.h"
 
-class HealthBar
-{
+class HealthBar {
 private:
-    Point position;
-    BITMAP* image;
-    int healthfactor;
+  Point position;
+  BITMAP *image;
+  int healthfactor;
+
 public:
-    HealthBar(BITMAP*, int, int);
-    ~HealthBar();
-    void Move(int);
-    void Draw(BITMAP*);
+  HealthBar(BITMAP *, int, int);
+  ~HealthBar();
+  void Move(int);
+  void Draw(BITMAP *);
 };

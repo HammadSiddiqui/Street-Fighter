@@ -1,18 +1,13 @@
 #pragma once
 
-struct Point
-{
-    float x;
-    float y;
+struct Point {
+  float x;
+  float y;
 
-    Point()
-    {
+  Point() {}
 
-    }
-
-    Point(float x, float y)
-    {
-        this->x = x;
-        this->y = y;
-    }
+  Point(float x, float y) {
+    this->x = x;
+    this->y = y;
+  }
 };
