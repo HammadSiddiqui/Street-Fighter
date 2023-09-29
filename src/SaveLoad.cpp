@@ -54,7 +54,7 @@ void SaveLoad::Load(BITMAP *EnemySprite) {
       } else if (token == 1) {
         // Second token has the position of the Fighter
         lst->GetHead()->data->SetPosition(float(atoi(line.c_str())), 400.0f);
-      } else if (token = 2) {
+      } else if (token == 2) {
         lst->GetHead()->data->SetHealth(atoi(line.c_str()));
       } else {
         // All the rest of the tokes have position(s) of the enemies

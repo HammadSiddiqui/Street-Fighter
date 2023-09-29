@@ -13,7 +13,7 @@ make dep-install
 make run
 ```
 
-![](images/splash.png)
+![](res/images/splash.png)
 
 
 Key | Action | 

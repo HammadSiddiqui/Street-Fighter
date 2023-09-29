@@ -11,7 +11,7 @@ public:
 
 protected:
   Fighter *target;
-  unsigned int delay = 0;
+  unsigned int delay;
 
 private:
 };

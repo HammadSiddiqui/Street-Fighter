@@ -1,16 +1,18 @@
-EXE := main
+EXE    := main
+CFLAGS := -Iinc `allegro-config --cflags release` -Wl,-rpath,/usr/local/lib
+LIBS   := `allegro-config --libs --static release`
 
-compile:
-	g++ *.cpp -o $(EXE) `pkg-config --libs allegro`
+all:
+	g++ src/*.cpp -o $(EXE) $(CFLAGS)  $(LIBS)
 
-run: compile
+run: all
 	./$(EXE)
 
 dep-install:	format-install
 	sudo apt install pkg-config liballegro4-dev libjpgalleg4-dev
 
 format-install:
-	sudo apt-get install clang-format
+	sudo apt get install clang-format
 
 format:
 	find . -regex '.*\.\(cpp\|hpp\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
